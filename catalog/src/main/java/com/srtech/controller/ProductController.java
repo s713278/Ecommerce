@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.srtech.entity.Product;
 import com.srtech.exception.ProductNotFoundException;
-import com.srtech.record.ProductRecord;
 import com.srtech.repository.ProductRepository;
 import com.srtech.service.ProductService;
 
@@ -79,12 +78,11 @@ public class ProductController {
 	
 	
 	@PostMapping(value = "/create",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductRecord> create(@RequestBody Product product){
+	public ResponseEntity<Product> create(@RequestBody Product product){
 		log.debug("In create() for product : {}",product);
 		Product p=productRepository.save(product);
 		log.debug("Out create() for product : {}",product);
-		ProductRecord  productRecord= new ProductRecord(p.getId(),p.getName(),p.getDescription());
-		return new ResponseEntity<ProductRecord>(productRecord,HttpStatus.CREATED);
+		return new ResponseEntity<Product>(p,HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value = "/existsById/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
