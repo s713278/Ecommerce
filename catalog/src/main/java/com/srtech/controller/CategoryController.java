@@ -47,15 +47,4 @@ public class CategoryController {
 
 		return andView;
 	}
-
-	String DUMMY_PRODUCTS_URI = "https://dummyjson.com/products";
-
-	@GetMapping("/dummyProducts")
-	public ResponseEntity<Object> getExternalProducts() {
-		log.debug("Getting PRoducts from {}",DUMMY_PRODUCTS_URI);
-		
-		Object data = restTemplate.getForObject(DUMMY_PRODUCTS_URI, Object.class);
-		return new ResponseEntity<Object>(data, HttpStatus.OK);
-	}
-
 }
