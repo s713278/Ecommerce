@@ -1,4 +1,4 @@
-package com.srtech.controller;
+package com.srtech.dto;
 
 import java.util.ArrayList;
 
@@ -28,15 +28,17 @@ import lombok.ToString;
 @ToString
 public class ProductDTO {
 
-	public int id;
+	public Integer id;
 	public String title;
 	public String description;
-	public int price;
-	public double discountPercentage;
-	public double rating;
-	public int stock;
+	public Double price;
+	public Double discountPercentage;
+	public Double rating;
+	public Integer stock;
 	public String brand;
 	public String category;
 	public String thumbnail;
+	
+	//@JsonIgnore
 	public ArrayList<String> images;
 }

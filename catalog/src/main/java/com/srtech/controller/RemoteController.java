@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.srtech.dto.ProductDTO;
+import com.srtech.service.IntegrationService;
+import com.srtech.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,27 +32,19 @@ public class RemoteController {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private IntegrationService integrationService;
 
 	private static String PRODUCTS = "/products";
 
 	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getExternalProducts() {
-		log.debug("Getting PRoducts from {}", BASE_URI + PRODUCTS);
-		ResponseEntity<Object> objectsMap = restTemplate.getForEntity(BASE_URI + PRODUCTS, Object.class);
-		Map objects = (LinkedHashMap) objectsMap.getBody();
-		
-		objects.keySet().forEach(t ->log.debug("{}",t) );
-		
-		List<Object> list=(List<Object>) objects.get("products");
-		
-		ObjectMapper objectMapper=new ObjectMapper();
-		
-		List<ProductDTO> products= 
-			list.stream()
-			.map(obj->objectMapper.convertValue(obj, ProductDTO.class))
-			.collect(Collectors.toList());
-		
-		return new ResponseEntity<Object>(products, HttpStatus.OK);
+	public ResponseEntity<Void> getExternalProducts() {
+		log.debug("Getting Products from {}", BASE_URI + PRODUCTS);
+		return integrationService.createDataFromAPI();
 
 	}
 
@@ -60,7 +55,6 @@ public class RemoteController {
 		params.put("id", id);
 		Object data = restTemplate.getForEntity(BASE_URI + PRODUCTS, Object.class, params);
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
-
 	}
 
 }

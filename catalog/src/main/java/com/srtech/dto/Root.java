@@ -1,4 +1,4 @@
-package com.srtech.controller;
+package com.srtech.dto;
 
 import java.util.ArrayList;
 

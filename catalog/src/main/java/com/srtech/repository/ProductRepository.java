@@ -12,11 +12,9 @@ import com.srtech.entity.Product;
 public interface ProductRepository extends CrudRepository<Product,Integer>, PagingAndSortingRepository<Product, Integer> {
 
 	//Select * from PRoduct Where Name='' 
-	List<Product> findByName(String name);
+	List<Product> findByTitle(String title);
 	
-	//Select * from PRoduct Where Name='' AND DESC=''
-	List<Product> findByNameAndDescription(String name,String desc);
 	
 	//Select name from Product Where Name='';
-	boolean existsByName(String name);
+	boolean existsByTitle(String title	);
 }
