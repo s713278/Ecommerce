@@ -2,6 +2,7 @@ package com.srtech.service;
 
 import java.util.List;
 
+import com.srtech.dto.ProductDTO;
 import com.srtech.entity.Product;
 
 public interface ProductService{
@@ -16,4 +17,8 @@ public interface ProductService{
 	boolean existsByName(String name);
 	
 	boolean existsById(Integer id);
+
+	void saveAll(List<ProductDTO> products);
+	
+	Long count();
 }

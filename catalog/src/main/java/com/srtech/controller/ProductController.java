@@ -20,13 +20,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.srtech.dto.ExcceptionDetails;
 import com.srtech.entity.Product;
 import com.srtech.exception.ProductNotFoundException;
 import com.srtech.repository.ProductRepository;
 import com.srtech.service.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "Product Controller",description = "Product Rest Service")
 @RestController
 @RequestMapping("/product")
 @Slf4j
@@ -37,12 +45,17 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	
+	
 
 	@GetMapping(value = "/{pageNo}/{pageSize}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getProducts(@PathVariable Integer pageNo,@PathVariable Integer pageSize) {
 		log.debug("In getProducts() pageNo : {} and pageSize : {}",pageNo, pageSize);
 		Pageable pageabl = PageRequest.of(pageNo, pageSize);
 		Page<Product> products=productRepository.findAll(pageabl);
+		
+		
 		log.debug("Total No Of Records :"+products.getSize());
 		//log.debug("products.getNumber() :"+products.getNumber());
 		log.debug("Out getProducts()");
@@ -64,7 +77,7 @@ public class ProductController {
 	
 	@GetMapping(value = "/search/{name}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> searchByName(@PathVariable String name){
-		List<Product> list =productRepository.findByName(name);
+		List<Product> list =productRepository.findByTitle(name);
 		if(list ==null || list.isEmpty()) {
 			throw new ProductNotFoundException("No products found with name "+name);
 		}
@@ -76,7 +89,18 @@ public class ProductController {
 		return new ResponseEntity<Boolean>(productService.existsByName(name),HttpStatus.OK);
 	}
 	
-	
+	@Operation(description = "Create Catalog Product ",method = "POST",summary = "Product Create API")
+	@ApiResponses(value = {
+	        @ApiResponse(responseCode = "201", description = "Product Created"),
+	        @ApiResponse(responseCode = "500", 
+	        description = "Internal Server Exception",
+	        content={
+	        		@Content(
+	        				mediaType = "",
+	        				schema = @Schema(implementation = ExcceptionDetails.class)
+	        				)
+	        }
+	        )})
 	@PostMapping(value = "/create",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> create(@RequestBody Product product){
 		log.debug("In create() for product : {}",product);
