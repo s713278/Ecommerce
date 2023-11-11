@@ -33,26 +33,24 @@ public class Product {
 	private String title;
 	@Column
 	private String description;
-	@Column
-	private Double price;
-	@Column
-	private Double discountPercentage;
+
 	@Column
 	private Double rating;
-	@Column
-	private Integer stock;
-	@Column
-	private String brand;
-	@Column
-	private String category;
+
+
 	@Column
 	private String thumbnail;
-	
-	//@Transient
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+	// @Transient
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	@Column
 	private List<Image> images;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+	@Column
+	private List<Sku> skus;
 
 	/*
 	 * @Temporal(value = TemporalType.TIMESTAMP)

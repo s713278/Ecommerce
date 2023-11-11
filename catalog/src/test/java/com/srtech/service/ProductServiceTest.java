@@ -20,7 +20,7 @@ import com.srtech.repository.ProductRepository;
 @ActiveProfiles(value = {"h2"})
 class ProductServiceTest {
 	@Autowired
-	ProductRepository productRepository;
+	private ProductRepository productRepository;
 	
 
 	@BeforeAll
@@ -45,12 +45,7 @@ class ProductServiceTest {
 				Product.builder()
 				.title("Samsung Universe 9")
 				.description("Samsung's new variant which goes beyond Galaxy to the Universe")
-				.price(1249d)
-				.discountPercentage(15.46d)
 				.rating(4.9d)
-				.stock(36)
-				.brand("Samsung")
-				.category("smartphones")
 				.images((ArrayList<Image>) List.of(Image.builder()
 						.imagePath("https://i.dummyjson.com/data/products/3/1.jpg")
 						.build()))
