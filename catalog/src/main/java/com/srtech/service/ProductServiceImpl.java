@@ -78,13 +78,8 @@ public class ProductServiceImpl implements ProductService {
 			).collect(Collectors.toList());
 			return Product.builder()
 				.title(prodDTO.getTitle())
-				.brand(prodDTO.getBrand())
-				.category(prodDTO.getCategory())
 				.description(prodDTO.getDescription())
-				.discountPercentage(prodDTO.getDiscountPercentage())
-				.price(prodDTO.getPrice())
 				.rating(prodDTO.getRating())
-				.stock(prodDTO.getStock())
 				.thumbnail(prodDTO.getThumbnail())
 				.images(images)
 				.build();
