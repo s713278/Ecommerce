@@ -9,7 +9,6 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>cart</artifactId>
-	<version>1.0</version>
 	<name>cart</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -26,6 +25,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
