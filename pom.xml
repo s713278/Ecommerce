@@ -71,6 +71,7 @@
 		<module>common</module>
 		<module>cart</module>
 		<module>catalog</module>
+		<module>service_registry</module>
 	</modules>
 	<packaging>pom</packaging>
 </project>
