@@ -1,11 +1,15 @@
 package com.srtech.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.srtech.dto.ProductDTO;
 import com.srtech.entity.Image;
 import com.srtech.entity.Product;
+import com.srtech.exception.ProductNotFoundException;
 import com.srtech.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -94,4 +99,40 @@ public class ProductServiceImpl implements ProductService {
 	public Long count() {
 		return  productRepository.count();
 	}
+
+	@Override
+	public Product findById(Integer productId) {
+		Optional<Product> productOpt=productRepository.findById(productId);
+		if(productOpt.isPresent()) {
+			return productOpt.get();
+		}
+		throw new ProductNotFoundException("No product foud nfor product id "+productId);
+	}
+
+	@Override
+	public Product findBySkuId(Integer skuId) {
+		List<Product> products= productRepository.findBySkusId(skuId);
+		if(products == null || products.isEmpty()) {
+			throw new ProductNotFoundException("No product foud nfor product based on skuId "+skuId);
+		}
+		return products.get(0);
+	}
+
+	@Override
+	public Page<Product> getfindAll(Pageable pageabl) {
+		
+		return null;
+	}
+
+	@Override
+	public Iterable<Product> findAll() {
+		return productRepository.findAll();
+	}
+
+	@Override
+	public Product save(Product product) {
+		return productRepository.save(product);
+	}
+
+	
 }

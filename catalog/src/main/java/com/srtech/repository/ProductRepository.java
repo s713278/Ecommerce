@@ -17,4 +17,6 @@ public interface ProductRepository extends CrudRepository<Product,Integer>, Pagi
 	
 	//Select name from Product Where Name='';
 	boolean existsByTitle(String title	);
+	
+	List<Product> findBySkusId(Integer skuId);
 }
