@@ -34,21 +34,26 @@ public class IntegrationService {
 		if(productService.count()>0) {
 			throw new RuntimeException("Already products are inserted/updated in database.");
 		}
+		//Remote Call
 		ResponseEntity<Object> responseEntity = restTemplate.getForEntity(BASE_URI + PRODUCTS, Object.class); 
 		
+		//Check the status
 		if(responseEntity.getStatusCode()==HttpStatus.OK) {
 			log.debug("API call is success");
 		}
 		
+		//GEt the products
 		Map objects = (LinkedHashMap) responseEntity.getBody();
 		
 		
 		objects.keySet().forEach(t ->log.debug("{}",t) );
 		
+		//List Of PRoducts
 		List<Object> list=(List<Object>) objects.get("products");
 		
 		
 		ObjectMapper objectMapper=new ObjectMapper();
+		
 		
 		List<ProductDTO> products= 
 			list.stream()

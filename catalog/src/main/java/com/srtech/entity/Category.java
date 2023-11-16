@@ -33,7 +33,7 @@ public class Category {
 	@Column
 	private String description;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST},fetch =FetchType.EAGER )
+	@OneToMany(cascade = {CascadeType.ALL},fetch =FetchType.EAGER )
 	@JoinColumn(name = "category_id")
 	private List<Product> products;
 	

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.srtech.dto.ExcceptionDetails;
 import com.srtech.entity.Product;
-import com.srtech.exception.ProductNotFoundException;
-import com.srtech.repository.ProductRepository;
 import com.srtech.service.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,19 +38,30 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductController {
 
 	@Autowired
-	private ProductRepository productRepository;
-	
-	@Autowired
 	private ProductService productService;
 	
+	@GetMapping("/{pid}")
+	public ResponseEntity<Product> getProductById(@PathVariable("pid") Integer productId) {
+		log.debug("Search for product id: {}",productId);
+		Product product =productService.findById(productId);
+		log.debug("Search resule for {} is : {}",productId,product);
+		return new ResponseEntity<Product>(product, HttpStatus.OK);
+	}
 	
+	@GetMapping("/sku/{skuId}")
+	public ResponseEntity<Product> getProductBySkuId(@PathVariable("skuId") Integer skuId) {
+		log.debug("Search for product based on sku id: {}",skuId);
+		Product product =productService.findById(skuId);
+		log.debug("Search result for sku id {} is a product : {}",skuId,product);
+		return new ResponseEntity<Product>(product, HttpStatus.OK);
+	}
 	
 
 	@GetMapping(value = "/{pageNo}/{pageSize}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getProducts(@PathVariable Integer pageNo,@PathVariable Integer pageSize) {
 		log.debug("In getProducts() pageNo : {} and pageSize : {}",pageNo, pageSize);
 		Pageable pageabl = PageRequest.of(pageNo, pageSize);
-		Page<Product> products=productRepository.findAll(pageabl);
+		Page<Product> products=productService.getfindAll(pageabl);
 		
 		
 		log.debug("Total No Of Records :"+products.getSize());
@@ -67,21 +75,12 @@ public class ProductController {
 		log.debug("In productsByOrder()");
 		
 		List<Product> items = new ArrayList<>();
-		for (Iterator<Product> it = productRepository.findAll(Sort.by("name","desc")).iterator(); it.hasNext();) {
+		for (Iterator<Product> it = productService.findAll().iterator(); it.hasNext();) {
 			items.add(it.next());
 		}
 		//log.debug("products.getNumber() :"+products.getNumber());
 		log.debug("Out productsByOrder()");
 		return new ResponseEntity<List<Product>>(items, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/search/{name}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Product>> searchByName(@PathVariable String name){
-		List<Product> list =productRepository.findByTitle(name);
-		if(list ==null || list.isEmpty()) {
-			throw new ProductNotFoundException("No products found with name "+name);
-		}
-		return new ResponseEntity<List<Product>>(list,HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/exists/{name}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -104,7 +103,7 @@ public class ProductController {
 	@PostMapping(value = "/create",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> create(@RequestBody Product product){
 		log.debug("In create() for product : {}",product);
-		Product p=productRepository.save(product);
+		Product p=productService.save(product);
 		log.debug("Out create() for product : {}",product);
 		return new ResponseEntity<Product>(p,HttpStatus.CREATED);
 	}

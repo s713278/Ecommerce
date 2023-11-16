@@ -2,6 +2,10 @@ package com.srtech.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import com.srtech.dto.ProductDTO;
 import com.srtech.entity.Product;
 
@@ -21,4 +25,15 @@ public interface ProductService{
 	void saveAll(List<ProductDTO> products);
 	
 	Long count();
+
+	Product findById(Integer productId);
+	
+	Product findBySkuId(Integer skuId);
+
+	Page<Product> getfindAll(Pageable pageabl);
+
+	Iterable<Product> findAll();
+
+	Product save(Product product);
+
 }
