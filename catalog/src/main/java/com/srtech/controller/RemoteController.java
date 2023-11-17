@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RemoteController {
 
+	@Value("${spring.boot.message}")
+	private String messageFromGit;
 	private static String BASE_URI = "https://dummyjson.com";
 
 	@Autowired
@@ -43,6 +46,7 @@ public class RemoteController {
 
 	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> getExternalProducts() {
+		log.debug("This Message is imported from Git Repo :{}",messageFromGit);
 		log.debug("Getting Products from {}", BASE_URI + PRODUCTS);
 		return integrationService.createDataFromAPI();
 
