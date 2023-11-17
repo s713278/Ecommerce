@@ -53,8 +53,8 @@ public class RemoteController {
 		log.debug("Getting PRoducts from {}", BASE_URI + PRODUCTS);
 		Map<String, String> params = new HashMap<>();
 		params.put("id", id);
-		Object data = restTemplate.getForEntity(BASE_URI + PRODUCTS, Object.class, params);
-		return new ResponseEntity<Object>(data, HttpStatus.OK);
+		ResponseEntity<ProductDTO> data = restTemplate.getForEntity(BASE_URI + PRODUCTS+"/"+id, ProductDTO.class);
+		return new ResponseEntity<Object>(data.getBody(), HttpStatus.OK);
 	}
 
 }

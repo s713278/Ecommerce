@@ -1,0 +1,39 @@
+#CIRCUIT BREAKER
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      minimumNumberOfCalls: 2
+      allowHealthIndicatorToFail: false
+      registerHealthIndicator: true
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 10
+      failureRateThreshold: 50
+      waitDurationInOpenState: 60000 # 60 seconds
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+  #instances:
+    #catalogService:
+      #allowHealthIndicatorToFail: false
+      #registerHealthIndicator: true
+      #slidingWindowType: COUNT_BASED
+      #slidingWindowSize: 5
+      #failureRateThreshold: 50
+      #waitDurationInOpenState: 15000 # 15 seconds
+      #permittedNumberOfCallsInHalfOpenState: 3
+      #automaticTransitionFromOpenToHalfOpenEnabled: true
+
+# CATALOG SERVICE ROOT
+api:
+  catalog:
+    baseurl: http://localhost:8081
+
+#ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always
+
+  health.circuitbreakers.enabled: true
