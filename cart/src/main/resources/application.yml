@@ -21,6 +21,16 @@ resilience4j.circuitbreaker:
       #waitDurationInOpenState: 15000 # 15 seconds
       #permittedNumberOfCallsInHalfOpenState: 3
       #automaticTransitionFromOpenToHalfOpenEnabled: true
+     #shippingService
+      #allowHealthIndicatorToFail: false
+      #registerHealthIndicator: true
+      #slidingWindowType: COUNT_BASED
+      #slidingWindowSize: 5
+      #failureRateThreshold: 50
+      #waitDurationInOpenState: 15000 # 15 seconds
+      #permittedNumberOfCallsInHalfOpenState: 3
+      #automaticTransitionFromOpenToHalfOpenEnabled: true
+    
 
 # CATALOG SERVICE ROOT
 api:

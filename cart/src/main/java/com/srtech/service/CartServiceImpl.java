@@ -70,6 +70,13 @@ public  @Slf4j @AllArgsConstructor class CartServiceImpl implements CartService 
 		return new ResponseEntity<Object>(responseEntity.getBody(),HttpStatus.OK);
 	}
 	
+	@CircuitBreaker(fallbackMethod = "fallBackForShipping",name = "shippingService")
+	public ResponseEntity<Object> checkShippingZipCode(Integer zipCode) {
+		log.debug("catalogUri from property file {}",catalogUri);
+		ResponseEntity<?> responseEntity=restTemplate.getForEntity(catalogUri+"/"+zipCode, Object.class);
+		log.debug("Status : {}",responseEntity.getStatusCode());
+		return new ResponseEntity<Object>(responseEntity.getBody(),HttpStatus.OK);
+	}
 	public ResponseEntity<Object> handleCatService(Integer productId,Throwable throwable) {
 		log.error("Unable to retrieve product info for id: {} , and Exception Details {}",productId,throwable.getMessage());
 		return new ResponseEntity<Object>("Catalog service is down and Unable to fetch product info for id:"+productId,HttpStatus.OK);
