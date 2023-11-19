@@ -41,7 +41,6 @@ public class RemoteController {
 	
 	@Autowired
 	private IntegrationService integrationService;
-
 	private static String PRODUCTS = "/products";
 
 	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
