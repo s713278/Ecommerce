@@ -36,4 +36,6 @@ public interface ProductService{
 
 	Product save(Product product);
 
+	void saveAllNew(List<ProductDTO> products);
+
 }
